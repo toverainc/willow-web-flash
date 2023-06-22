@@ -134,12 +134,6 @@ willowSettings.onsubmit = async (event) => {
   } catch (e) {
     console.error(e);
     term.writeln(`Error: ${e.message}`);
-  } finally {
-    // Hide progress bars and show erase buttons
-    for (let index = 1; index < table.rows.length; index++) {
-      table.rows[index].cells[2].style.display = 'none';
-      table.rows[index].cells[3].style.display = 'initial';
-    }
   }
 }
 
