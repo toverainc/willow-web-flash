@@ -497,7 +497,7 @@ export interface NVSRow {
     value?: string,
 }
 
-export function generate(version: number, size: number, data: NVSRow[]): Uint8Array {
+export function generateNvs(version: number, size: number, data: NVSRow[]): Uint8Array {
     const input_size = check_size(size);
     if (version === 1) {
         version = Page.VERSION1;
@@ -549,7 +549,7 @@ window.addEventListener("load", async (event) => {
     ];
 
     const firmware = await urlAsUInt8Array('willow-dist-mod.bin')
-    const nvs = generate(Page.VERSION2, 0x24000, rows)
+    const nvs = generateNvs(Page.VERSION2, 0x24000, rows)
     firmware.set(nvs, 0x9000)
     downloadBlob(firmware, 'willow-dist-modded.bin', 'application/octet-stream');
 });
