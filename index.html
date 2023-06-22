@@ -36,7 +36,22 @@
                 <input class="btn btn-info btn-sm" type="button" id="connectButton" value="Connect" />
                 <input class="btn btn-warning btn-sm" type="button" id="disconnectButton" value="Disconnect" />
                 <input class="btn btn-danger btn-sm" type="button" id="eraseButton" value="Erase Flash" />
+                
+                <form role="form" id="willowSettings" style="display: none;"><!--XXX: show this only after connect-->
+                    <div class="form-group" style="margin-top: 10px;">
+                        <label for="wifiName">WiFi Name</label>
+                        <input type="text" required class="form-control" name="wifiName" id="wifiName" placeholder="Enter name of your wifi network.">
+                    </div>
+                    <div class="form-group">
+                        <label for="wifiPass">WiFi Password</label>
+                        <input type="text" required class="form-control" name="wifiPass" id="wifiPass" placeholder="Enter password for your wifi network.">
+                    </div>
+                    <input class="btn btn-primary btn-sm" type="submit" value="Flash Willow" />
+                </form>
+
                 <br>
+                
+                
 
                 <div class="alert alert-danger alert-dismissible" id="alertDiv" style="display:none; margin-top:10px">
                     <a href="#" class="close" aria-label="close" onclick="$('.alert').hide()">&times;</a>

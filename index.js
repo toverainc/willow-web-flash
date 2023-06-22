@@ -14,11 +14,13 @@ const lblBaudrate = document.getElementById('lblBaudrate');
 const lblConnTo = document.getElementById('lblConnTo');
 const table = document.getElementById('fileTable');
 const alertDiv = document.getElementById('alertDiv');
+const willowSettings = document.getElementById('willowSettings');
 
 // import { Transport } from './cp210x-webusb.js'
 import * as esptooljs from "./bundle.js";
 const ESPLoader = esptooljs.ESPLoader;
 const Transport = esptooljs.Transport;
+const generateNvs = esptooljs.generateNvs;
 
 let term = new Terminal({ cols: 120, rows: 40 });
 term.open(terminal);
@@ -92,9 +94,54 @@ connectButton.onclick = async () => {
   connectButton.style.display = 'none';
   disconnectButton.style.display = 'initial';
   eraseButton.style.display = 'initial';
-  filesDiv.style.display = 'initial';
+  //filesDiv.style.display = 'initial'; XXX: disable all the normal file stuff
   consoleDiv.style.display = 'none';
+  willowSettings.style.display = 'initial';
 };
+
+function ui8ToBstr(u8Array) {
+  let b_str = "";
+  for (let i = 0; i < u8Array.length; i++) {
+    b_str += String.fromCharCode(u8Array[i]);
+  }
+  return b_str;
+}
+
+willowSettings.onsubmit = async (event) => {
+  event.preventDefault()
+  const buffer = await (await fetch('willow-dist.bin')).arrayBuffer() //XXX: change url
+  const firmware = new Uint8Array(buffer)
+
+  const rows = [
+    { key: "WIFI", type: "namespace" },
+    { key: "PSK", type: "data", encoding: "string", value: event.target.wifiPass.value },
+    { key: "SSID", type: "data", encoding: "string", value: event.target.wifiName.value },
+  ]
+  const nvs = generateNvs(2, 0x24000, rows)
+  firmware.set(nvs, 0x9000)
+
+  try {
+    await esploader.write_flash(
+      [{ data: ui8ToBstr(firmware), address: 0 }],
+      'keep',
+      undefined,
+      undefined,
+      false,
+      true,
+      (fileIndex, written, total) => { },
+      (image) => CryptoJS.MD5(CryptoJS.enc.Latin1.parse(image)),
+    );
+  } catch (e) {
+    console.error(e);
+    term.writeln(`Error: ${e.message}`);
+  } finally {
+    // Hide progress bars and show erase buttons
+    for (let index = 1; index < table.rows.length; index++) {
+      table.rows[index].cells[2].style.display = 'none';
+      table.rows[index].cells[3].style.display = 'initial';
+    }
+  }
+}
 
 resetButton.onclick = async () => {
   if (device === null) {
@@ -198,6 +245,7 @@ consoleStartButton.onclick = async () => {
     transport = new Transport(device);
   }
   lblConsoleFor.style.display = 'block';
+
   consoleStartButton.style.display = 'none';
   consoleStopButton.style.display = 'initial';
   programDiv.style.display = 'none';
@@ -269,6 +317,7 @@ programButton.onclick = async () => {
 
   const fileArray = [];
   const progressBars = [];
+
 
   for (let index = 1; index < table.rows.length; index++) {
     const row = table.rows[index];
