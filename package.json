@@ -26,6 +26,7 @@
     "url": "https://github.com/espressif/esptool-js/issues"
   },
   "dependencies": {
+    "crc-32": "^1.2.2",
     "pako": "^2.1.0",
     "tslib": "^2.4.1"
   },
