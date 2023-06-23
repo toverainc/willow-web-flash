@@ -2,22 +2,26 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <title>ESP Tool</title>
+        <title>Willow Web Flash</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@4.19.0/css/xterm.css">
         <link
             href="https://fonts.googleapis.com/css?family=Orbitron"
             rel="stylesheet"
         />
-        <link rel="icon" href="favicon.ico" />
+        <link rel="icon" href="/assets/willow-logo.svg" type="image/svg+xml">
          <script src="https://cdn.jsdelivr.net/npm/xterm@4.19.0/lib/xterm.min.js"></script>
          <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.js"></script>
          <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
          <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
     </head>
     <body>
-        <h1 align="center"><p><img src="./assets/esp-logo.png" width="42" height="42" style="vertical-align:middle"></img> ESP Tool</p></h1>
-        <h4 align="center">A Serial Flasher utility for Espressif chips</h4>
+        <style>body{font-family:"Raleway"}</style>
+        <h1 align="center"><p><img src="./assets/willow-logo.svg" width="42" height="42" style="vertical-align:middle"></img> Willow Flash</p></h1>
+        <h4 align="center">Flash Willow from your browser</h4>
         <div id="safariErr" style="display:none"><p align="center" style="color:red">This tool is not supported on Safari browser!</p>
         </div>
         <div class="container" id="main">
@@ -45,6 +49,10 @@
                     <div class="form-group">
                         <label for="wifiPass">WiFi Password</label>
                         <input type="text" required class="form-control" name="wifiPass" id="wifiPass" placeholder="Enter password for your wifi network.">
+                    </div>
+                    <div class="form-group">
+                        <label for="wasUrl">Willow Application Server (WAS) URL</label>
+                        <input type="text" required class="form-control" name="wasUrl" id="wasUrl" placeholder="Enter your WAS URL.">
                     </div>
                     <input class="btn btn-primary btn-sm" type="submit" value="Flash Willow" />
                 </form>

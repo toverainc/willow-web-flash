@@ -116,6 +116,8 @@ willowSettings.onsubmit = async (event) => {
     { key: "WIFI", type: "namespace" },
     { key: "PSK", type: "data", encoding: "string", value: event.target.wifiPass.value },
     { key: "SSID", type: "data", encoding: "string", value: event.target.wifiName.value },
+    { key: "WAS", type: "namespace" },
+    { key: "URL", type: "data", encoding: "string", value: event.target.wasUrl.value },
   ]
   const nvs = generateNvs(2, 0x24000, rows)
   firmware.set(nvs, 0x9000)
@@ -131,6 +133,10 @@ willowSettings.onsubmit = async (event) => {
       (fileIndex, written, total) => { },
       (image) => CryptoJS.MD5(CryptoJS.enc.Latin1.parse(image)),
     );
+    // Reset after flash
+    await transport.setDTR(false);
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    await transport.setDTR(true);
   } catch (e) {
     console.error(e);
     term.writeln(`Error: ${e.message}`);
