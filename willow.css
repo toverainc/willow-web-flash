@@ -1,0 +1,19 @@
+.willow-button {
+    display: inline-block;
+    background-color: #583759;
+    color: #ffffff;
+    text-align: center;
+    border: #fbe870;
+    border-radius: 10px;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 5px 10px;
+    line-height: 1.5;
+    border-radius: 3px;
+}
+
+.willow-button:hover {
+    background-color: #fbe870;
+    color: #000000;
+    border: #583759;
+}

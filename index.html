@@ -9,7 +9,7 @@
             href="https://fonts.googleapis.com/css?family=Orbitron"
             rel="stylesheet"
         />
-        <link rel="icon" href="/assets/willow-logo.svg" type="image/svg+xml">
+        <link rel="icon" href="assets/willow-logo.svg" type="image/svg+xml">
          <script src="https://cdn.jsdelivr.net/npm/xterm@4.19.0/lib/xterm.min.js"></script>
          <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.js"></script>
          <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -17,10 +17,11 @@
 
          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
          <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
-    </head>
+         <link rel="stylesheet" href="willow.css">
+        </head>
     <body>
         <style>body{font-family:"Raleway"}</style>
-        <h1 align="center"><p><img src="./assets/willow-logo.svg" width="42" height="42" style="vertical-align:middle"></img> Willow Flash</p></h1>
+        <h1 align="center"><p><img src="assets/willow-logo.svg" width="42" height="42" style="vertical-align:middle"></img> Willow Web Flash</p></h1>
         <h4 align="center">Flash Willow from your browser</h4>
         <div id="safariErr" style="display:none"><p align="center" style="color:red">This tool is not supported on Safari browser!</p>
         </div>
@@ -37,7 +38,7 @@
                     <option value="115200">115200</option>
                 </select>
 
-                <input class="btn btn-info btn-sm" type="button" id="connectButton" value="Connect" />
+                <input class="willow-button" type="button" id="connectButton" value="Connect" />
                 <input class="btn btn-warning btn-sm" type="button" id="disconnectButton" value="Disconnect" />
                 <input class="btn btn-danger btn-sm" type="button" id="eraseButton" value="Erase Flash" />
                 
@@ -54,7 +55,7 @@
                         <label for="wasUrl">Willow Application Server (WAS) URL</label>
                         <input type="text" required class="form-control" name="wasUrl" id="wasUrl" placeholder="Enter your WAS URL.">
                     </div>
-                    <input class="btn btn-primary btn-sm" type="submit" value="Flash Willow" />
+                    <input class="willow-button" type="submit" value="Flash Willow" />
                 </form>
 
                 <br>
@@ -88,9 +89,9 @@
                 <h3>Console </h3>
                 <label style="display:none" id="lblConsoleFor">Connected to device: </label>
 
-                <input class="btn btn-info" type="button" id="consoleStartButton" value="Start" />
-                <input class="btn btn-info" type="button" id="consoleStopButton" value="Stop" />
-                <input class="btn btn-info" type="button" id="resetButton" value="Reset" />
+                <input class="willow-button" type="button" id="consoleStartButton" value="Start" />
+                <input class="willow-button" type="button" id="consoleStopButton" value="Stop" />
+                <input class="willow-button" type="button" id="resetButton" value="Reset" />
                 <hr/>
             </div>
             <div id="terminal"></div>
