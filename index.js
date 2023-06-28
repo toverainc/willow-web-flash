@@ -12,7 +12,10 @@ const programDiv = document.getElementById('program');
 const consoleDiv = document.getElementById('console');
 const lblBaudrate = document.getElementById('lblBaudrate');
 const lblConnTo = document.getElementById('lblConnTo');
+const lblRelease = document.getElementById('lblRelease');
+const release = document.getElementById('release');
 const table = document.getElementById('fileTable');
+const useLatest = document.getElementById('useLatest');
 const alertDiv = document.getElementById('alertDiv');
 const willowSettings = document.getElementById('willowSettings');
 
@@ -31,6 +34,7 @@ let chip = null;
 let esploader;
 let file1 = null;
 let connected = false;
+let releases = null;
 
 disconnectButton.style.display = 'none';
 eraseButton.style.display = 'none';
@@ -104,6 +108,14 @@ connectButton.onclick = async () => {
     term.writeln(`Error: ${e.message}`);
   }
 
+  releases = await getReleases();
+  if (release.length == 0) {
+    for (const r of releases) {
+      const option = new Option(r['version'], r['url']);
+      release.add(option);
+    }
+  }
+
   console.log('Settings done for :' + chip);
   lblBaudrate.style.display = 'none';
   lblConnTo.innerHTML = 'Connected to device: ' + chip;
@@ -117,6 +129,16 @@ connectButton.onclick = async () => {
   willowSettings.style.display = 'initial';
 };
 
+useLatest.onchange = async () => {
+  if (useLatest.checked == true) {
+    lblRelease.hidden = true;
+    release.hidden = true;
+  } else {
+    lblRelease.hidden = false;
+    release.hidden = false;
+  }
+};
+
 function ui8ToBstr(u8Array) {
   let b_str = "";
   for (let i = 0; i < u8Array.length; i++) {
@@ -127,7 +149,7 @@ function ui8ToBstr(u8Array) {
 
 willowSettings.onsubmit = async (event) => {
   event.preventDefault()
-  const url = 'https://github.com/toverainc/willow-test/releases/download/0.1.0-alpha1/willow-dist.bin'
+  const url = `https://github.com/toverainc/willow-test/releases/download/${release.value}/willow-dist.bin`
   const workerUrl = `https://worker.heywillow.io/fetch?url=${url}`
   const buffer = await (await fetch(workerUrl)).arrayBuffer() //XXX: change url
   const firmware = new Uint8Array(buffer)
