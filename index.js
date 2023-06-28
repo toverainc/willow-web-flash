@@ -109,7 +109,7 @@ function ui8ToBstr(u8Array) {
 
 willowSettings.onsubmit = async (event) => {
   event.preventDefault()
-  const buffer = await (await fetch('willow-dist.bin')).arrayBuffer() //XXX: change url
+  const buffer = await (await fetch('https://github.com/toverainc/willow-test/releases/download/0.1.0-alpha1/willow-dist.bin', { mode: "no-cors", redirect: "follow" })).arrayBuffer() //XXX: change url
   const firmware = new Uint8Array(buffer)
 
   const rows = [
