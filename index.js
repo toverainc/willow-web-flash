@@ -38,6 +38,24 @@ consoleStopButton.style.display = 'none';
 filesDiv.style.display = 'none';
 
 
+async function getReleases() {
+  const willowReleases = [];
+  const ghReleasesUrl = 'https://api.github.com/repos/toverainc/willow-test/releases';
+  const response = await fetch(ghReleasesUrl);
+  const jsonResponse = await response.json();
+
+  for (const release of jsonResponse) {
+    for (const asset of release['assets']) {
+      if (asset['name'] == 'willow-dist.bin') {
+	console.log("Adding ", release['tag_name'], release['browser_download_url']);
+        willowReleases.push({'version': release['tag_name'], 'url': release['browser_download_url']});
+        break;
+      }
+    }
+  }
+  return willowReleases;
+}
+
 function handleFileSelect(evt) {
   var file = evt.target.files[0];
 
