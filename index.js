@@ -41,6 +41,14 @@ eraseButton.style.display = 'none';
 consoleStopButton.style.display = 'none';
 filesDiv.style.display = 'none';
 
+// Populate WAS URL based on URL param if we have it
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const wasURL = urlParams.get('wasURL')
+if (wasURL) {
+  console.log(`Setting wasURL to ${wasURL} from URL param`)
+  document.getElementById('wasUrl').setAttribute('value', wasURL);
+}
 
 async function getReleases() {
   const willowReleases = [];
