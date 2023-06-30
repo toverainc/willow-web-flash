@@ -1,5 +1,6 @@
 const baudrates = document.getElementById('baudrates');
 const connectButton = document.getElementById('connectButton');
+const deviceType = document.getElementById('deviceType');
 const disconnectButton = document.getElementById('disconnectButton');
 const resetButton = document.getElementById('resetButton');
 const consoleStartButton = document.getElementById('consoleStartButton');
@@ -34,7 +35,7 @@ let chip = null;
 let esploader;
 let file1 = null;
 let connected = false;
-let releases = null;
+let releases = {};
 
 disconnectButton.style.display = 'none';
 eraseButton.style.display = 'none';
@@ -51,21 +52,43 @@ if (wasURL) {
 }
 
 async function getReleases() {
-  const willowReleases = [];
-  const ghReleasesUrl = 'https://api.github.com/repos/toverainc/willow-test/releases';
+  const willowReleases = {'ESP32_S3_BOX': [], 'ESP32_S3_BOX_LITE': []};
+  const ghReleasesUrl = 'https://api.github.com/repos/toverainc/willow/releases';
   const response = await fetch(ghReleasesUrl);
   const jsonResponse = await response.json();
 
   for (const release of jsonResponse) {
     for (const asset of release['assets']) {
-      if (asset['name'] == 'willow-dist.bin') {
-	console.log("Adding ", release['tag_name'], release['browser_download_url']);
-        willowReleases.push({'version': release['tag_name'], 'url': release['browser_download_url']});
-        break;
+      if (asset['name'] == 'willow-dist-ESP32_S3_BOX.bin') {
+        console.log("Adding", release['tag_name'], asset['browser_download_url']);
+        willowReleases['ESP32_S3_BOX'].push({'version': release['tag_name'], 'url': asset['browser_download_url']});
+      } else if (asset['name'] == 'willow-dist-ESP32_S3_BOX_LITE.bin') {
+        console.log("Adding", release['tag_name'], asset['browser_download_url']);
+        willowReleases['ESP32_S3_BOX_LITE'].push({'version': release['tag_name'], 'url': asset['browser_download_url']});
       }
     }
   }
   return willowReleases;
+}
+
+function getReleaseUrl() {
+  let deviceType = document.querySelector('input[name="deviceType"]:checked').value;
+  for (const r of releases[deviceType]) {
+    if (r['version'] == release.value) {
+      return r['url'];
+    }
+  }
+}
+
+function updateReleaseDropdown() {
+  // clear releases first
+  while (release.options.length > 0) {
+    release.remove[0];
+  }
+  for (const r of releases[document.querySelector('input[name="deviceType"]:checked').value]) {
+    const option = new Option(r['version']);
+    release.add(option);
+  }
 }
 
 function handleFileSelect(evt) {
@@ -117,12 +140,7 @@ connectButton.onclick = async () => {
   }
 
   releases = await getReleases();
-  if (release.length == 0) {
-    for (const r of releases) {
-      const option = new Option(r['version'], r['url']);
-      release.add(option);
-    }
-  }
+  updateReleaseDropdown();
 
   console.log('Settings done for :' + chip);
   lblBaudrate.style.display = 'none';
@@ -136,6 +154,10 @@ connectButton.onclick = async () => {
   consoleDiv.style.display = 'none';
   willowSettings.style.display = 'initial';
 };
+
+deviceType.onclick = function () {
+  updateReleaseDropdown();
+}
 
 useLatest.onchange = async () => {
   if (useLatest.checked == true) {
@@ -157,8 +179,8 @@ function ui8ToBstr(u8Array) {
 
 willowSettings.onsubmit = async (event) => {
   event.preventDefault()
-  const url = `https://github.com/toverainc/willow-test/releases/download/${release.value}/willow-dist.bin`
-  const workerUrl = `https://worker.heywillow.io/fetch?url=${url}`
+  const releaseUrl = getReleaseUrl();
+  const workerUrl = `https://worker.heywillow.io/fetch?url=${releaseUrl}`
   const buffer = await (await fetch(workerUrl)).arrayBuffer() //XXX: change url
   const firmware = new Uint8Array(buffer)
 

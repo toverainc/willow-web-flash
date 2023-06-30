@@ -56,6 +56,13 @@
                         <input type="text" required class="form-control" name="wasUrl" id="wasUrl" placeholder="Enter your WAS URL.">
                     </div>
                     <div class="form-group">
+                        <label>Device type:</label>
+                        <input type="radio" name="deviceType" id="deviceType" value="ESP32_S3_BOX" checked>
+                        <label for="deviceType">ESP32-S3-Box</label>
+                        <input type="radio" name="deviceType" id="deviceType" value="ESP32_S3_BOX_LITE">
+                        <label for="deviceType">ESP32-S3-Box-Lite</label>
+                    </div>
+                    <div class="form-group">
                         <label for="useLatest">Flash latest release</label>
                         <input type="checkbox" name="useLatest" id="useLatest" checked></br>
                         <label for="release" id="lblRelease" hidden>Release to flash</label>
