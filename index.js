@@ -190,10 +190,10 @@ function ui8ToBstr(u8Array) {
 
 willowSettings.onsubmit = async (event) => {
   event.preventDefault()
-  term.writeln('Fetching your release. Please wait...');
+  term.writeln('Fetching your Willow release. Please wait...');
   const releaseUrl = getReleaseUrl();
   const workerUrl = `https://worker.heywillow.io/fetch?url=${releaseUrl}`
-  const buffer = await (await fetch(workerUrl)).arrayBuffer() //XXX: change url
+  const buffer = await (await fetch(workerUrl)).arrayBuffer()
   const firmware = new Uint8Array(buffer)
 
   const rows = [
@@ -223,6 +223,7 @@ willowSettings.onsubmit = async (event) => {
       (image) => CryptoJS.MD5(CryptoJS.enc.Latin1.parse(image)),
     );
     // Reset after flash
+    term.writeln('Flash successful! Resetting your device.');
     await transport.setDTR(false);
     await new Promise((resolve) => setTimeout(resolve, 100));
     await transport.setDTR(true);
