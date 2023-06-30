@@ -190,6 +190,7 @@ function ui8ToBstr(u8Array) {
 
 willowSettings.onsubmit = async (event) => {
   event.preventDefault()
+  term.writeln('Fetching your release. Please wait...');
   const releaseUrl = getReleaseUrl();
   const workerUrl = `https://worker.heywillow.io/fetch?url=${releaseUrl}`
   const buffer = await (await fetch(workerUrl)).arrayBuffer() //XXX: change url
