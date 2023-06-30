@@ -42,13 +42,24 @@ eraseButton.style.display = 'none';
 consoleStopButton.style.display = 'none';
 filesDiv.style.display = 'none';
 
-// Populate WAS URL based on URL param if we have it
+// Attempt grab from local storage
+const lsWifiName = localStorage.getItem('wifiName');
+const lsWasUrl = localStorage.getItem('wasUrl');
+
+// Get WAS URL Param (prefer local storage)
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const wasURL = urlParams.get('wasURL')
-if (wasURL) {
+
+if (lsWasUrl) {
+  document.getElementById('wasUrl').setAttribute('value', lsWasUrl);
+} else if (wasURL) {
   console.log(`Setting wasURL to ${wasURL} from URL param`)
   document.getElementById('wasUrl').setAttribute('value', wasURL);
+}
+
+if (lsWifiName) {
+  document.getElementById('wifiName').setAttribute('value', lsWifiName);
 }
 
 async function getReleases() {
@@ -191,6 +202,11 @@ willowSettings.onsubmit = async (event) => {
     { key: "WAS", type: "namespace" },
     { key: "URL", type: "data", encoding: "string", value: event.target.wasUrl.value },
   ]
+
+  // Save values to local storage
+  localStorage.setItem('wifiName', event.target.wifiName.value);
+  localStorage.setItem('wasUrl', event.target.wasUrl.value);
+
   const nvs = generateNvs(2, 0x24000, rows)
   firmware.set(nvs, 0x9000)
 
