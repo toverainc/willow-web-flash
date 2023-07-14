@@ -31,7 +31,7 @@
 		{
 			"type": "shell",
 			"label": "HTTP server",
-			"command": "http-server -p 5001",
+			"command": "python3 -m http.server 8008",
 			"isBackground": true,
 			"runOptions": {
 				"runOn": "folderOpen"
