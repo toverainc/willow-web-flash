@@ -208,10 +208,11 @@ willowSettings.onsubmit = async (event) => {
   localStorage.setItem('wifiName', event.target.wifiName.value);
   localStorage.setItem('wasUrl', event.target.wasUrl.value);
 
-  const nvs = generateNvs(2, 0x24000, rows)
-  firmware.set(nvs, 0x9000)
-
   try {
+    const nvs = generateNvs(2, 0x24000, rows);
+    firmware.set(nvs, 0x9000);
+    term.writeln('Successfully injected Willow settings in image!');
+
     await esploader.write_flash(
       [{ data: ui8ToBstr(firmware), address: 0 }],
       'keep',
