@@ -832,7 +832,7 @@ export class ESPLoader {
       return image;
     }
     if (flash_size === "keep" && flash_mode === "keep" && flash_freq === "keep") {
-      this.info("Not changing the image");
+      this.info("Not changing image flash parameters (size, mode, frequency)");
       return image;
     }
 
