@@ -64,7 +64,7 @@ if (lsWifiName) {
 
 async function getReleases() {
   const willowReleases = {'ESP32_S3_BOX': [], 'ESP32_S3_BOX_LITE': []};
-  const ghReleasesUrl = 'https://api.github.com/repos/toverainc/willow/releases';
+  const ghReleasesUrl = 'https://worker.heywillow.io/releases';
   const response = await fetch(ghReleasesUrl);
   const jsonResponse = await response.json();
 
