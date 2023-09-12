@@ -1,14 +1,22 @@
-# Javascript implementation of esptool
+# Willow Web Flash
 
-This repository contains a Javascript implementation of [esptool](https://github.com/espressif/esptool), a serial flasher utility for Espressif chips. Unlike the Python-based esptool, `esptool-js` doesn't implement generation of binary images out of ELF files, and doesn't include companion tools similar to [espefuse.py](https://github.com/espressif/esptool/wiki/espefuse) and [espsecure.py](https://github.com/espressif/esptool/wiki/espsecure).
+This repository contains a Javascript implementation of [esptool](https://github.com/espressif/esptool), a serial flasher utility for Espressif chips adapted for [Willow](https://heywillow.io). Unlike the Python-based esptool, `esptool-js` doesn't implement generation of binary images out of ELF files, and doesn't include companion tools similar to [espefuse.py](https://github.com/espressif/esptool/wiki/espefuse) and [espsecure.py](https://github.com/espressif/esptool/wiki/espsecure).
 
 `esptool-js` is based on [Web Serial API](https://wicg.github.io/serial/) and works in Google Chrome and Microsoft Edge, [version 89 or later](https://developer.mozilla.org/en-US/docs/Web/API/Serial#browser_compatibility).
 
-## Live demo
+We've added additional functionality for Willow to support:
 
-Visit https://espressif.github.io/esptool-js/ to see this tool in action.
+- Generation and merge of NVS partition for Wifi and WAS settings
+- Integration with your locally hosted WAS to pass your defined settings (minus Wifi PSK)
+- Selection or automatic flashing of Willow releases
+- Hardware selection
+- Much more!
 
-## Testing it locally
+## Willow Web Flash for Users
+
+Willow users should visit our [hosted site](https://flash.heywillow.io) to flash their Willow devices. This repo is for developers who wish to deploy their own.
+
+## Local Development and Testing
 
 ```
 npm install
