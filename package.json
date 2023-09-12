@@ -1,6 +1,6 @@
 {
-  "name": "esptool-js",
-  "version": "0.2.2",
+  "name": "willow-web-flash",
+  "version": "0.1",
   "module": "lib/index.js",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -20,10 +20,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/espressif/esptool-js.git"
+    "url": "git+https://github.com/toverainc/willow-web-flash.git"
   },
   "bugs": {
-    "url": "https://github.com/espressif/esptool-js/issues"
+    "url": "https://github.com/toverainc/willow-web-flash/issues"
   },
   "dependencies": {
     "crc-32": "^1.2.2",
