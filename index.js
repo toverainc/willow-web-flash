@@ -79,6 +79,7 @@ async function getReleases() {
       }
     }
   }
+  console.debug(willowReleases);
   return willowReleases;
 }
 
