@@ -63,7 +63,7 @@ if (lsWifiName) {
 }
 
 async function getReleases() {
-  const willowReleases = {'ESP32_S3_BOX': [], 'ESP32_S3_BOX_LITE': []};
+  const willowReleases = {'ESP32_S3_BOX': [], 'ESP32_S3_BOX_3': [], 'ESP32_S3_BOX_LITE': []};
   const ghReleasesUrl = 'https://worker.heywillow.io/releases';
   const response = await fetch(ghReleasesUrl);
   const jsonResponse = await response.json();
@@ -73,12 +73,16 @@ async function getReleases() {
       if (asset['name'] == 'willow-dist-ESP32_S3_BOX.bin') {
         console.log("Adding", release['tag_name'], asset['browser_download_url']);
         willowReleases['ESP32_S3_BOX'].push({'version': release['tag_name'], 'url': asset['browser_download_url']});
+      } else if (asset['name'] == 'willow-dist-ESP32_S3_BOX_3.bin') {
+        console.log("Adding", release['tag_name'], asset['browser_download_url']);
+        willowReleases['ESP32_S3_BOX_3'].push({'version': release['tag_name'], 'url': asset['browser_download_url']});
       } else if (asset['name'] == 'willow-dist-ESP32_S3_BOX_LITE.bin') {
         console.log("Adding", release['tag_name'], asset['browser_download_url']);
         willowReleases['ESP32_S3_BOX_LITE'].push({'version': release['tag_name'], 'url': asset['browser_download_url']});
       }
     }
   }
+  console.debug(willowReleases);
   return willowReleases;
 }
 
