@@ -98,7 +98,7 @@ function getReleaseUrl() {
 function updateReleaseDropdown() {
   // clear releases first
   while (release.options.length > 0) {
-    release.remove[0];
+    release.remove(0);
   }
   for (const r of releases[document.querySelector('input[name="deviceType"]:checked').value]) {
     const option = new Option(r['version']);
