@@ -1,6 +1,6 @@
 const baudrates = document.getElementById('baudrates');
 const connectButton = document.getElementById('connectButton');
-const deviceType = document.getElementById('deviceType');
+const deviceTypes = document.getElementsByName('deviceType');
 const disconnectButton = document.getElementById('disconnectButton');
 const resetButton = document.getElementById('resetButton');
 const consoleStartButton = document.getElementById('consoleStartButton');
@@ -170,9 +170,9 @@ connectButton.onclick = async () => {
   willowSettings.style.display = 'initial';
 };
 
-deviceType.onclick = function () {
-  updateReleaseDropdown();
-}
+deviceTypes.forEach(function(radio) {
+  radio.addEventListener("click", updateReleaseDropdown);
+});
 
 useLatest.onchange = async () => {
   if (useLatest.checked == true) {
