@@ -232,6 +232,7 @@ willowSettings.onsubmit = async (event) => {
     await transport.setDTR(false);
     await new Promise((resolve) => setTimeout(resolve, 100));
     await transport.setDTR(true);
+    
   } catch (e) {
     console.error(e);
     term.writeln(`Error: ${e.message}`);
@@ -334,7 +335,9 @@ disconnectButton.onclick = async () => {
 };
 
 let isConsoleClosed = false;
-consoleStartButton.onclick = async () => {
+consoleStartButton.onclick = consoleRead;
+
+async function consoleRead() {
   if (device === null) {
     device = await navigator.serial.requestPort({});
     transport = new Transport(device);
