@@ -369,6 +369,7 @@ async function consoleRead() {
 
 consoleStopButton.onclick = async () => {
   console.log("stopping serial console");
+  resetButton.style.display = 'none';
   isConsoleClosed = true;
   await transport.disconnect();
   await transport.waitForUnlock(1500);
@@ -376,6 +377,7 @@ consoleStopButton.onclick = async () => {
   consoleStartButton.style.display = 'initial';
   consoleStopButton.style.display = 'none';
   programDiv.style.display = 'initial';
+  resetButton.style.display = 'initial';
 };
 
 function validate_program_inputs() {
