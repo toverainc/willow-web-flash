@@ -240,6 +240,7 @@ willowSettings.onsubmit = async (event) => {
 }
 
 resetButton.onclick = async () => {
+  console.log("resetting device");
   if (device === null) {
     device = await navigator.serial.requestPort({});
     transport = new Transport(device);
@@ -338,6 +339,7 @@ let isConsoleClosed = false;
 consoleStartButton.onclick = consoleRead;
 
 async function consoleRead() {
+  console.log("starting serial console");
   if (device === null) {
     device = await navigator.serial.requestPort({});
     transport = new Transport(device);
@@ -366,6 +368,7 @@ async function consoleRead() {
 };
 
 consoleStopButton.onclick = async () => {
+  console.log("stopping serial console");
   isConsoleClosed = true;
   await transport.disconnect();
   await transport.waitForUnlock(1500);
