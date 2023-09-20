@@ -344,6 +344,7 @@ async function consoleRead() {
   }
   lblConsoleFor.style.display = 'block';
 
+  consoleDiv.style.display = 'initial';
   consoleStartButton.style.display = 'none';
   consoleStopButton.style.display = 'initial';
   programDiv.style.display = 'none';
