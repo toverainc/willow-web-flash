@@ -348,7 +348,9 @@ async function consoleRead() {
   consoleStopButton.style.display = 'initial';
   programDiv.style.display = 'none';
 
-  await transport.connect();
+  if (!connected) {
+    await transport.connect();
+  }
   isConsoleClosed = false;
 
   while (true && !isConsoleClosed) {
