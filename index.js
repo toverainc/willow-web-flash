@@ -18,6 +18,7 @@ const release = document.getElementById('release');
 const table = document.getElementById('fileTable');
 const useLatest = document.getElementById('useLatest');
 const alertDiv = document.getElementById('alertDiv');
+const willowFlash = document.getElementById('willowFlash');
 const willowSettings = document.getElementById('willowSettings');
 
 // import { Transport } from './cp210x-webusb.js'
@@ -349,7 +350,7 @@ async function consoleRead() {
   consoleDiv.style.display = 'initial';
   consoleStartButton.style.display = 'none';
   consoleStopButton.style.display = 'initial';
-  programDiv.style.display = 'none';
+  willowFlash.disabled = true;
 
   if (!connected) {
     await transport.connect();
@@ -365,6 +366,7 @@ async function consoleRead() {
     }
   }
   console.log('quitting console');
+  willowFlash.disabled = false;
 };
 
 consoleStopButton.onclick = async () => {
