@@ -50,7 +50,7 @@
                     </div>
                     <div class="form-group">
                         <label for="wifiPass">WiFi Password</label>
-                        <input type="text" required class="form-control" name="wifiPass" id="wifiPass" placeholder="Enter password for your wifi network.">
+                        <input type="text" required class="form-control" name="wifiPass" id="wifiPass" pattern="^[ -~]{8,63}" placeholder="Enter password for your wifi network." title="Wi-Fi WPA passphrase must be between 8 and 63 ASCII characters">
                     </div>
                     <div class="form-group">
                         <label for="wasUrl">Willow Application Server (WAS) URL</label>
