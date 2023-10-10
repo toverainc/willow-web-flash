@@ -4,6 +4,7 @@
         <meta charset="utf-8" />
         <title>Willow Web Flash</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@4.19.0/css/xterm.css">
         <link
             href="https://fonts.googleapis.com/css?family=Orbitron"
@@ -50,6 +51,7 @@
                     </div>
                     <div class="form-group">
                         <label for="wifiPass">WiFi Password</label>
+                        <i class="bi bi-eye-slash" id="toggleWifiPass"></i>
                         <input type="password" required class="form-control" name="wifiPass" id="wifiPass" pattern="^[ -~]{8,63}" placeholder="Enter password for your wifi network." title="Wi-Fi WPA passphrase must be between 8 and 63 ASCII characters">
                     </div>
                     <div class="form-group">
