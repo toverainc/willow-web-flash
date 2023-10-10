@@ -101,7 +101,14 @@ function updateReleaseDropdown() {
   while (release.options.length > 0) {
     release.remove(0);
   }
-  for (const r of releases[document.querySelector('input[name="deviceType"]:checked').value]) {
+
+  const deviceReleases = releases[document.querySelector('input[name="deviceType"]:checked').value];
+  const num_non_prereleases = deviceReleases.reduce((acc, cur) => cur.prerelease === false ? acc + 1 : acc, 0);
+  for (const r of deviceReleases) {
+    // skip pre-releases unless there are only pre-releases
+    if (r['prerelease'] == true && num_non_prereleases > 0) {
+      continue;
+    }
     const option = new Option(r['version']);
     release.add(option);
   }
