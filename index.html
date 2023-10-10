@@ -57,13 +57,37 @@
                         <input type="text" required class="form-control" name="wasUrl" id="wasUrl" placeholder="Enter your WAS URL.">
                     </div>
                     <div class="form-group">
-                        <label>Device type:</label>
-                        <input type="radio" name="deviceType" id="deviceTypeBox3" value="ESP32_S3_BOX_3" checked>
-                        <label for="deviceTypeBox3">ESP32-S3-Box-3</label>
-                        <input type="radio" name="deviceType" id="deviceTypeBox" value="ESP32_S3_BOX">
-                        <label for="deviceTypeBox">ESP32-S3-Box</label>
-                        <input type="radio" name="deviceType" id="deviceTypeBoxLite" value="ESP32_S3_BOX_LITE">
-                        <label for="deviceTypeBoxLite">ESP32-S3-Box-Lite</label>
+                        <table>
+                            <tr>
+                                <th>Device type:</th>
+                            </tr>
+                            <tr>
+                                <td width="160">
+                                    <img src="https://worker.heywillow.io/api/asset?type=image&asset=ESP32-S3-BOX-3" width="140"></img>
+                                </td>
+                                <td width="160">
+                                    <img src="https://worker.heywillow.io/api/asset?type=image&asset=ESP32-S3-BOX" width="140"></img>
+                                </td>
+                                <td width="160">
+                                    <img src="https://worker.heywillow.io/api/asset?type=image&asset=ESP32-S3-BOX-LITE" width="140"></img>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="160">
+                                    <input type="radio" name="deviceType" id="deviceTypeBox3" value="ESP32_S3_BOX_3" checked>
+                                    <label for="deviceTypeBox3">ESP32-S3-Box-3</label>
+                                </td>
+                                <td width="160">
+                                    <input type="radio" name="deviceType" id="deviceTypeBox" value="ESP32_S3_BOX">
+                                    <label for="deviceTypeBox">ESP32-S3-Box</label>
+                                </td>
+                                <td width="160">
+                                    <input type="radio" name="deviceType" id="deviceTypeBoxLite" value="ESP32_S3_BOX_LITE">
+                                    <label for="deviceTypeBoxLite">ESP32-S3-Box-Lite</label>
+                                </td>
+
+                            </tr>
+                        </table>
                     </div>
                     <div class="form-group">
                         <label for="useLatest">Flash latest release</label>
