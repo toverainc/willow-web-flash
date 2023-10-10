@@ -42,7 +42,7 @@
                 <input class="willow-button" type="button" id="connectButton" value="Connect" />
                 <input class="btn btn-warning btn-sm" type="button" id="disconnectButton" value="Disconnect" />
                 <input class="btn btn-danger btn-sm" type="button" id="eraseButton" value="Erase Flash" />
-                
+
                 <form role="form" id="willowSettings" style="display: none;"><!--XXX: show this only after connect-->
                     <div class="form-group" style="margin-top: 10px;">
                         <label for="wifiName">WiFi Name</label>
@@ -54,7 +54,7 @@
                     </div>
                     <div class="form-group">
                         <label for="wasUrl">Willow Application Server (WAS) URL</label>
-                        <input type="text" required class="form-control" name="wasUrl" id="wasUrl" placeholder="Enter your WAS URL.">
+                        <input type="text" required class="form-control" name="wasUrl" id="wasUrl" pattern="^(ws:\/\/|wss:\/\/).*\/ws$" placeholder="Enter your WAS URL." title="WAS URL must start with ws:// or wss:// and must end on /ws">
                     </div>
                     <div class="form-group">
                         <table>
@@ -99,8 +99,8 @@
                 </form>
 
                 <br>
-                
-                
+
+
 
                 <div class="alert alert-danger alert-dismissible" id="alertDiv" style="display:none; margin-top:10px">
                     <a href="#" class="close" aria-label="close" onclick="$('.alert').hide()">&times;</a>
