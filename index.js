@@ -73,13 +73,13 @@ async function getReleases() {
     for (const asset of release['assets']) {
       if (asset['name'] == 'willow-dist-ESP32_S3_BOX.bin') {
         console.log("Adding", release['tag_name'], asset['browser_download_url']);
-        willowReleases['ESP32_S3_BOX'].push({'version': release['tag_name'], 'url': asset['browser_download_url']});
+        willowReleases['ESP32_S3_BOX'].push({'version': release['tag_name'], 'url': asset['browser_download_url'], 'prerelease': release['prerelease']});
       } else if (asset['name'] == 'willow-dist-ESP32_S3_BOX_3.bin') {
         console.log("Adding", release['tag_name'], asset['browser_download_url']);
-        willowReleases['ESP32_S3_BOX_3'].push({'version': release['tag_name'], 'url': asset['browser_download_url']});
+        willowReleases['ESP32_S3_BOX_3'].push({'version': release['tag_name'], 'url': asset['browser_download_url'], 'prerelease': release['prerelease']});
       } else if (asset['name'] == 'willow-dist-ESP32_S3_BOX_LITE.bin') {
         console.log("Adding", release['tag_name'], asset['browser_download_url']);
-        willowReleases['ESP32_S3_BOX_LITE'].push({'version': release['tag_name'], 'url': asset['browser_download_url']});
+        willowReleases['ESP32_S3_BOX_LITE'].push({'version': release['tag_name'], 'url': asset['browser_download_url'], 'prerelease': release['prerelease']});
       }
     }
   }
