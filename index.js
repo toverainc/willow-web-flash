@@ -50,6 +50,7 @@ const lsWasUrl = localStorage.getItem('wasUrl');
 // Get WAS URL Param (prefer local storage)
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
+const showPreReleases = urlParams.get('showPreReleases');
 const wasURL = urlParams.get('wasURL')
 
 if (lsWasUrl) {
@@ -73,13 +74,13 @@ async function getReleases() {
     for (const asset of release['assets']) {
       if (asset['name'] == 'willow-dist-ESP32_S3_BOX.bin') {
         console.log("Adding", release['tag_name'], asset['browser_download_url']);
-        willowReleases['ESP32_S3_BOX'].push({'version': release['tag_name'], 'url': asset['browser_download_url']});
+        willowReleases['ESP32_S3_BOX'].push({'version': release['tag_name'], 'url': asset['browser_download_url'], 'prerelease': release['prerelease']});
       } else if (asset['name'] == 'willow-dist-ESP32_S3_BOX_3.bin') {
         console.log("Adding", release['tag_name'], asset['browser_download_url']);
-        willowReleases['ESP32_S3_BOX_3'].push({'version': release['tag_name'], 'url': asset['browser_download_url']});
+        willowReleases['ESP32_S3_BOX_3'].push({'version': release['tag_name'], 'url': asset['browser_download_url'], 'prerelease': release['prerelease']});
       } else if (asset['name'] == 'willow-dist-ESP32_S3_BOX_LITE.bin') {
         console.log("Adding", release['tag_name'], asset['browser_download_url']);
-        willowReleases['ESP32_S3_BOX_LITE'].push({'version': release['tag_name'], 'url': asset['browser_download_url']});
+        willowReleases['ESP32_S3_BOX_LITE'].push({'version': release['tag_name'], 'url': asset['browser_download_url'], 'prerelease': release['prerelease']});
       }
     }
   }
@@ -101,7 +102,14 @@ function updateReleaseDropdown() {
   while (release.options.length > 0) {
     release.remove(0);
   }
-  for (const r of releases[document.querySelector('input[name="deviceType"]:checked').value]) {
+
+  const deviceReleases = releases[document.querySelector('input[name="deviceType"]:checked').value];
+  const num_non_prereleases = deviceReleases.reduce((acc, cur) => cur.prerelease === false ? acc + 1 : acc, 0);
+  for (const r of deviceReleases) {
+    // skip pre-releases unless there are only pre-releases
+    if (r['prerelease'] == true && num_non_prereleases > 0 && !showPreReleases) {
+      continue;
+    }
     const option = new Option(r['version']);
     release.add(option);
   }
