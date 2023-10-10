@@ -107,7 +107,7 @@ function updateReleaseDropdown() {
   const num_non_prereleases = deviceReleases.reduce((acc, cur) => cur.prerelease === false ? acc + 1 : acc, 0);
   for (const r of deviceReleases) {
     // skip pre-releases unless there are only pre-releases
-    if (r['prerelease'] == true && num_non_prereleases > 0 && !showPreReleases) {
+    if (r['prerelease'] == true && num_non_prereleases > 0 && showPreReleases != "true") {
       continue;
     }
     const option = new Option(r['version']);
