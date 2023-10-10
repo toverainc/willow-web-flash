@@ -18,6 +18,8 @@ const release = document.getElementById('release');
 const table = document.getElementById('fileTable');
 const useLatest = document.getElementById('useLatest');
 const alertDiv = document.getElementById('alertDiv');
+const toggleWifiPass = document.getElementById('toggleWifiPass');
+const wifiPass = document.getElementById('wifiPass');
 const willowFlash = document.getElementById('willowFlash');
 const willowSettings = document.getElementById('willowSettings');
 
@@ -476,6 +478,12 @@ programButton.onclick = async () => {
       table.rows[index].cells[3].style.display = 'initial';
     }
   }
+};
+
+toggleWifiPass.onclick = async () => {
+  const type = wifiPass.getAttribute('type') === 'password' ? 'text' : 'password';
+  wifiPass.setAttribute('type', type);
+  toggleWifiPass.classList.toggle('bi-eye');
 };
 
 addFile.onclick();
