@@ -4,6 +4,7 @@
         <meta charset="utf-8" />
         <title>Willow Web Flash</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@4.19.0/css/xterm.css">
         <link
             href="https://fonts.googleapis.com/css?family=Orbitron"
@@ -32,6 +33,7 @@
                 <label for="baudrates" id="lblBaudrate">Baudrate:</label>
                 <label style="display:none" id="lblConnTo">Connected to device: </label>
                 <select name="baudrates" id="baudrates">
+                    <option value="2000000">2000000</option>
                     <option value="921600">921600</option>
                     <option value="460800">460800</option>
                     <option value="230400">230400</option>
@@ -41,26 +43,53 @@
                 <input class="willow-button" type="button" id="connectButton" value="Connect" />
                 <input class="btn btn-warning btn-sm" type="button" id="disconnectButton" value="Disconnect" />
                 <input class="btn btn-danger btn-sm" type="button" id="eraseButton" value="Erase Flash" />
-                
+
                 <form role="form" id="willowSettings" style="display: none;"><!--XXX: show this only after connect-->
                     <div class="form-group" style="margin-top: 10px;">
                         <label for="wifiName">WiFi Name</label>
-                        <input type="text" required class="form-control" name="wifiName" id="wifiName" placeholder="Enter name of your wifi network.">
+                        <input type="text" required class="form-control" name="wifiName" id="wifiName" pattern="^[\x00-\x7F\u0080-\uFFFF]{2,32}$" "placeholder="Enter name of your wifi network." title="Wi-Fi SSID must be between 2 and 32 characters.">
                     </div>
                     <div class="form-group">
                         <label for="wifiPass">WiFi Password</label>
-                        <input type="text" required class="form-control" name="wifiPass" id="wifiPass" placeholder="Enter password for your wifi network.">
+                        <i class="bi bi-eye-slash" id="toggleWifiPass"></i>
+                        <input type="password" required class="form-control" name="wifiPass" id="wifiPass" pattern="^[ -~]{8,63}" placeholder="Enter password for your wifi network." title="Wi-Fi WPA passphrase must be between 8 and 63 ASCII characters">
                     </div>
                     <div class="form-group">
                         <label for="wasUrl">Willow Application Server (WAS) URL</label>
-                        <input type="text" required class="form-control" name="wasUrl" id="wasUrl" placeholder="Enter your WAS URL.">
+                        <input type="text" required class="form-control" name="wasUrl" id="wasUrl" pattern="^(ws:\/\/|wss:\/\/).*\/ws$" placeholder="Enter your WAS URL." title="WAS URL must start with ws:// or wss:// and must end on /ws">
                     </div>
                     <div class="form-group">
-                        <label>Device type:</label>
-                        <input type="radio" name="deviceType" id="deviceType" value="ESP32_S3_BOX" checked>
-                        <label for="deviceType">ESP32-S3-Box</label>
-                        <input type="radio" name="deviceType" id="deviceType" value="ESP32_S3_BOX_LITE">
-                        <label for="deviceType">ESP32-S3-Box-Lite</label>
+                        <table>
+                            <tr>
+                                <th>Device type:</th>
+                            </tr>
+                            <tr>
+                                <td width="160">
+                                    <img src="https://worker.heywillow.io/api/asset?type=image&asset=ESP32-S3-BOX-3" width="140"></img>
+                                </td>
+                                <td width="160">
+                                    <img src="https://worker.heywillow.io/api/asset?type=image&asset=ESP32-S3-BOX" width="140"></img>
+                                </td>
+                                <td width="160">
+                                    <img src="https://worker.heywillow.io/api/asset?type=image&asset=ESP32-S3-BOX-LITE" width="140"></img>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="160">
+                                    <input type="radio" name="deviceType" id="deviceTypeBox3" value="ESP32_S3_BOX_3" checked>
+                                    <label for="deviceTypeBox3">ESP32-S3-Box-3</label>
+                                </td>
+                                <td width="160">
+                                    <input type="radio" name="deviceType" id="deviceTypeBox" value="ESP32_S3_BOX">
+                                    <label for="deviceTypeBox">ESP32-S3-Box</label>
+                                </td>
+                                <td width="160">
+                                    <input type="radio" name="deviceType" id="deviceTypeBoxLite" value="ESP32_S3_BOX_LITE">
+                                    <label for="deviceTypeBoxLite">ESP32-S3-Box-Lite</label>
+                                </td>
+
+                            </tr>
+                        </table>
                     </div>
                     <div class="form-group">
                         <label for="useLatest">Flash latest release</label>
@@ -68,12 +97,12 @@
                         <label for="release" id="lblRelease" hidden>Release to flash</label>
                         <select name="release" id="release" hidden></select>
                     </div>
-                    <input class="willow-button" type="submit" value="Flash Willow" />
+                    <input class="willow-button" id="willowFlash" type="submit" value="Flash Willow" />
                 </form>
 
                 <br>
-                
-                
+
+
 
                 <div class="alert alert-danger alert-dismissible" id="alertDiv" style="display:none; margin-top:10px">
                     <a href="#" class="close" aria-label="close" onclick="$('.alert').hide()">&times;</a>

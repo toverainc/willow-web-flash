@@ -1,6 +1,6 @@
 const baudrates = document.getElementById('baudrates');
 const connectButton = document.getElementById('connectButton');
-const deviceType = document.getElementById('deviceType');
+const deviceTypes = document.getElementsByName('deviceType');
 const disconnectButton = document.getElementById('disconnectButton');
 const resetButton = document.getElementById('resetButton');
 const consoleStartButton = document.getElementById('consoleStartButton');
@@ -18,6 +18,9 @@ const release = document.getElementById('release');
 const table = document.getElementById('fileTable');
 const useLatest = document.getElementById('useLatest');
 const alertDiv = document.getElementById('alertDiv');
+const toggleWifiPass = document.getElementById('toggleWifiPass');
+const wifiPass = document.getElementById('wifiPass');
+const willowFlash = document.getElementById('willowFlash');
 const willowSettings = document.getElementById('willowSettings');
 
 // import { Transport } from './cp210x-webusb.js'
@@ -49,6 +52,7 @@ const lsWasUrl = localStorage.getItem('wasUrl');
 // Get WAS URL Param (prefer local storage)
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
+const showPreReleases = urlParams.get('showPreReleases');
 const wasURL = urlParams.get('wasURL')
 
 if (lsWasUrl) {
@@ -63,8 +67,8 @@ if (lsWifiName) {
 }
 
 async function getReleases() {
-  const willowReleases = {'ESP32_S3_BOX': [], 'ESP32_S3_BOX_LITE': []};
-  const ghReleasesUrl = 'https://worker.heywillow.io/releases';
+  const willowReleases = {'ESP32_S3_BOX': [], 'ESP32_S3_BOX_3': [], 'ESP32_S3_BOX_LITE': []};
+  const ghReleasesUrl = 'https://worker.heywillow.io/api/release';
   const response = await fetch(ghReleasesUrl);
   const jsonResponse = await response.json();
 
@@ -72,13 +76,17 @@ async function getReleases() {
     for (const asset of release['assets']) {
       if (asset['name'] == 'willow-dist-ESP32_S3_BOX.bin') {
         console.log("Adding", release['tag_name'], asset['browser_download_url']);
-        willowReleases['ESP32_S3_BOX'].push({'version': release['tag_name'], 'url': asset['browser_download_url']});
+        willowReleases['ESP32_S3_BOX'].push({'version': release['tag_name'], 'url': asset['browser_download_url'], 'prerelease': release['prerelease']});
+      } else if (asset['name'] == 'willow-dist-ESP32_S3_BOX_3.bin') {
+        console.log("Adding", release['tag_name'], asset['browser_download_url']);
+        willowReleases['ESP32_S3_BOX_3'].push({'version': release['tag_name'], 'url': asset['browser_download_url'], 'prerelease': release['prerelease']});
       } else if (asset['name'] == 'willow-dist-ESP32_S3_BOX_LITE.bin') {
         console.log("Adding", release['tag_name'], asset['browser_download_url']);
-        willowReleases['ESP32_S3_BOX_LITE'].push({'version': release['tag_name'], 'url': asset['browser_download_url']});
+        willowReleases['ESP32_S3_BOX_LITE'].push({'version': release['tag_name'], 'url': asset['browser_download_url'], 'prerelease': release['prerelease']});
       }
     }
   }
+  console.debug(willowReleases);
   return willowReleases;
 }
 
@@ -96,7 +104,14 @@ function updateReleaseDropdown() {
   while (release.options.length > 0) {
     release.remove(0);
   }
-  for (const r of releases[document.querySelector('input[name="deviceType"]:checked').value]) {
+
+  const deviceReleases = releases[document.querySelector('input[name="deviceType"]:checked').value];
+  const num_non_prereleases = deviceReleases.reduce((acc, cur) => cur.prerelease === false ? acc + 1 : acc, 0);
+  for (const r of deviceReleases) {
+    // skip pre-releases unless there are only pre-releases
+    if (r['prerelease'] == true && num_non_prereleases > 0 && showPreReleases != "true") {
+      continue;
+    }
     const option = new Option(r['version']);
     release.add(option);
   }
@@ -166,9 +181,9 @@ connectButton.onclick = async () => {
   willowSettings.style.display = 'initial';
 };
 
-deviceType.onclick = function () {
-  updateReleaseDropdown();
-}
+deviceTypes.forEach(function(radio) {
+  radio.addEventListener("click", updateReleaseDropdown);
+});
 
 useLatest.onchange = async () => {
   if (useLatest.checked == true) {
@@ -192,7 +207,7 @@ willowSettings.onsubmit = async (event) => {
   event.preventDefault()
   term.writeln('Fetching your Willow release. Please wait...');
   const releaseUrl = getReleaseUrl();
-  const workerUrl = `https://worker.heywillow.io/fetch?url=${releaseUrl}`
+  const workerUrl = `https://worker.heywillow.io/api/fetch?url=${releaseUrl}`
   const buffer = await (await fetch(workerUrl)).arrayBuffer()
   const firmware = new Uint8Array(buffer)
 
@@ -228,6 +243,7 @@ willowSettings.onsubmit = async (event) => {
     await transport.setDTR(false);
     await new Promise((resolve) => setTimeout(resolve, 100));
     await transport.setDTR(true);
+    await consoleRead();
   } catch (e) {
     console.error(e);
     term.writeln(`Error: ${e.message}`);
@@ -235,6 +251,7 @@ willowSettings.onsubmit = async (event) => {
 }
 
 resetButton.onclick = async () => {
+  console.log("resetting device");
   if (device === null) {
     device = await navigator.serial.requestPort({});
     transport = new Transport(device);
@@ -330,18 +347,24 @@ disconnectButton.onclick = async () => {
 };
 
 let isConsoleClosed = false;
-consoleStartButton.onclick = async () => {
+consoleStartButton.onclick = consoleRead;
+
+async function consoleRead() {
+  console.log("starting serial console");
   if (device === null) {
     device = await navigator.serial.requestPort({});
     transport = new Transport(device);
   }
   lblConsoleFor.style.display = 'block';
 
+  consoleDiv.style.display = 'initial';
   consoleStartButton.style.display = 'none';
   consoleStopButton.style.display = 'initial';
-  programDiv.style.display = 'none';
+  willowFlash.disabled = true;
 
-  await transport.connect();
+  if (!connected) {
+    await transport.connect();
+  }
   isConsoleClosed = false;
 
   while (true && !isConsoleClosed) {
@@ -353,9 +376,12 @@ consoleStartButton.onclick = async () => {
     }
   }
   console.log('quitting console');
+  willowFlash.disabled = false;
 };
 
 consoleStopButton.onclick = async () => {
+  console.log("stopping serial console");
+  resetButton.style.display = 'none';
   isConsoleClosed = true;
   await transport.disconnect();
   await transport.waitForUnlock(1500);
@@ -363,6 +389,7 @@ consoleStopButton.onclick = async () => {
   consoleStartButton.style.display = 'initial';
   consoleStopButton.style.display = 'none';
   programDiv.style.display = 'initial';
+  resetButton.style.display = 'initial';
 };
 
 function validate_program_inputs() {
@@ -451,6 +478,12 @@ programButton.onclick = async () => {
       table.rows[index].cells[3].style.display = 'initial';
     }
   }
+};
+
+toggleWifiPass.onclick = async () => {
+  const type = wifiPass.getAttribute('type') === 'password' ? 'text' : 'password';
+  wifiPass.setAttribute('type', type);
+  toggleWifiPass.classList.toggle('bi-eye');
 };
 
 addFile.onclick();
