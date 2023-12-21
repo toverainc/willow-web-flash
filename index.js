@@ -5,6 +5,8 @@ const disconnectButton = document.getElementById('disconnectButton');
 const resetButton = document.getElementById('resetButton');
 const consoleStartButton = document.getElementById('consoleStartButton');
 const consoleStopButton = document.getElementById('consoleStopButton');
+const dialogFlashFailed = document.getElementById('dialogFlashFailed');
+const dialogPostFlash = document.getElementById('dialogPostFlash');
 const eraseButton = document.getElementById('eraseButton');
 const programButton = document.getElementById('programButton');
 const filesDiv = document.getElementById('files');
@@ -44,6 +46,9 @@ disconnectButton.style.display = 'none';
 eraseButton.style.display = 'none';
 consoleStopButton.style.display = 'none';
 filesDiv.style.display = 'none';
+
+dialogPostFlashConfirmButton.addEventListener('click', close(dialogPostFlash));
+dialogFlashFailedConfirmButton.addEventListener('click', close(dialogFlashFailed));
 
 // Attempt grab from local storage
 const lsWifiName = localStorage.getItem('wifiName');
@@ -240,6 +245,7 @@ willowSettings.onsubmit = async (event) => {
     );
     // Reset after flash
     term.writeln('Flash successful! Resetting your device.');
+    dialogPostFlash.showModal();
     await transport.setDTR(false);
     await new Promise((resolve) => setTimeout(resolve, 100));
     await transport.setDTR(true);
@@ -247,6 +253,7 @@ willowSettings.onsubmit = async (event) => {
   } catch (e) {
     console.error(e);
     term.writeln(`Error: ${e.message}`);
+    dialogFlashFailed.showModal();
   }
 }
 

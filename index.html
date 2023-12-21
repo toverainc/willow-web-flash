@@ -21,6 +21,25 @@
          <link rel="stylesheet" href="willow.css">
         </head>
     <body>
+        <dialog id="dialogFlashFailed">
+          <h3>Flash failed!</h3>
+          <p>
+          ESP microcontrollers can be sensitive to low power USB ports (e.g. a laptop), and low quality USB cables.<br>
+            Please try using a different USB port or another USB cable.
+          </p>
+          <form method="dialog">
+            <button id="dialogFlashFailedConfirmButton">Ok</button>
+          </form>
+        </dialog>
+        <dialog id="dialogPostFlash">
+          <h3>Flash completed!</h3>
+          <p>
+            If this is the first time flashing Willow on this device, a power cycle is recommended.
+          </p>
+          <form method="dialog">
+            <button id="dialogPostFlashConfirmButton">Ok</button>
+          </form>
+        </dialog>
         <style>body{font-family:"Raleway"}</style>
         <h1 align="center"><p><img src="assets/willow-logo.svg" width="42" height="42" style="vertical-align:middle"></img> Willow Web Flash</p></h1>
         <h4 align="center">Flash Willow from your browser</h4>
