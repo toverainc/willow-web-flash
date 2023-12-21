@@ -17,3 +17,10 @@
     color: #000000;
     border: #583759;
 }
+
+dialog {
+    inset: 0;
+    margin: auto;
+    position: fixed;
+    width: 80%;
+}
