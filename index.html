@@ -47,7 +47,7 @@
                 <form role="form" id="willowSettings" style="display: none;"><!--XXX: show this only after connect-->
                     <div class="form-group" style="margin-top: 10px;">
                         <label for="wifiName">WiFi Name</label>
-                        <input type="text" required class="form-control" name="wifiName" id="wifiName" pattern="^[\x00-\x7F\u0080-\uFFFF]{2,32}$" "placeholder="Enter name of your wifi network." title="Wi-Fi SSID must be between 2 and 32 characters.">
+                        <input type="text" required class="form-control" name="wifiName" id="wifiName" pattern="^[\x00-\x7F\u0080-\uFFFF]{1,32}$" "placeholder="Enter name of your wifi network." title="Wi-Fi SSID must be between 1 and 32 ASCII characters.">
                     </div>
                     <div class="form-group">
                         <label for="wifiPass">WiFi Password</label>
