@@ -73,7 +73,7 @@ if (lsWifiName) {
 
 async function getReleases() {
   const willowReleases = {'ESP32_S3_BOX': [], 'ESP32_S3_BOX_3': [], 'ESP32_S3_BOX_LITE': []};
-  const ghReleasesUrl = 'https://worker.heywillow.io/api/release';
+  const ghReleasesUrl = 'https://worker.heywillow.org/api/release';
   const response = await fetch(ghReleasesUrl);
   const jsonResponse = await response.json();
 
@@ -212,7 +212,7 @@ willowSettings.onsubmit = async (event) => {
   event.preventDefault()
   term.writeln('Fetching your Willow release. Please wait...');
   const releaseUrl = getReleaseUrl();
-  const workerUrl = `https://worker.heywillow.io/api/fetch?url=${releaseUrl}`
+  const workerUrl = `https://worker.heywillow.org/api/fetch?url=${releaseUrl}`
   const buffer = await (await fetch(workerUrl)).arrayBuffer()
   const firmware = new Uint8Array(buffer)
 
